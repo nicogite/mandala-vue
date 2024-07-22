@@ -297,8 +297,8 @@ export function generateMandalaSvg(mandalaOptions) {
 
                 let displayClass = 'rhombus';
                 let colorClass = lineColorList[i];
-                let animateClass = 'animate_'+i;
-                let fillColor = lineColorList[i];
+                let animateClass = 'animate_'+(i+j);
+                let fillOpacityDelay = (i+j) * mandalaOptions.fillOpacityDelay;
                     svg.append("polygon")
                         .attr("points", points.map(p => `${p.x},${p.y}`).join(" "))
                         .attr("class", `${displayClass} ${colorClass} animate ${animateClass}`)
@@ -308,6 +308,9 @@ export function generateMandalaSvg(mandalaOptions) {
                         .style("stroke", '#555')
                         .style("stroke-width", '1')
                         .style("stroke-opacity", '0')
+                        .style("transition", `fill-opacity ${fillOpacityDelay}s`)
+                        //.style("transition", `stroke-opacity ${fillOpacityDelay}s`)
+
 
             }
        }

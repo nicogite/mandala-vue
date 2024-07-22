@@ -11,9 +11,9 @@
 
     <div id="mainContainer">
 
-      <MandalaGenerator v-model="mandalaName" @submit-mandala="generateMandala"/>
+      <MandalaGenerator v-model="mandalaName" ref="mandalaGenerator" @submit-mandala="generateMandala"/>
 
-      <MandalaInterface v-model="mandalaName" ref="mandalaInterface"/>
+      <MandalaInterface v-model="mandalaName" ref="mandalaInterface" @page-refresh="pageRefresh"/>
 
     </div>
     
@@ -31,12 +31,18 @@ import { ref, watch } from 'vue'
 
 const mandalaName = ref('');
 const mandalaInterface = ref(null)
+const mandalaGenerator = ref(null)
 
 function generateMandala(e) {
   mandalaInterface.value.launchMandalaInterface()
 }
 
-
+function pageRefresh(e) {
+  console.log('pageRefresh')
+  console.log(mandalaGenerator.value);
+  mandalaName.value = ''
+  mandalaGenerator.value.showGenerator(500)
+}
 /*watch(mandalaName, (newName, oldName) => {
   console.log('mandalaName in parent (app.vue)');
   console.log(newName);

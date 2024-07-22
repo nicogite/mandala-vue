@@ -1,8 +1,12 @@
 <template>
     <div id="blueDisc" ref="mandalaGeneratorBackground">
+
+      <div id="blueBackground">
+        
+      </div>
   
-      <div id="blueBackground"></div>
-  
+      <div id="backgroundShadow"></div>
+
       <div id="discContent">
           <h1>The Mandala Project</h1>
   
@@ -78,8 +82,9 @@ onMounted(() => {
 
 async function submitMandalaName (e) {
 
-    await rotateGeneratotButton(delay)
-    await hideBlueDisc(delay)
+    await rotateGeneratorButton(delay)
+    await hideGenerator(delay)
+    await rotateGeneratorButton(delay, true)
     emit('submitMandala')
 }
 
@@ -89,19 +94,25 @@ async function focusOnInput() {
   mandalaNameInput.value.focus()
 }
 
-function rotateGeneratotButton(ms) {
-  mandalaGeneratorButton.value.style.transform="rotate(360deg)"
+function rotateGeneratorButton(ms, resetButton = false) {
+  const rotation = resetButton? 1:-1;
+  mandalaGeneratorButton.value.style.transform=`rotate(${rotation * 360}deg)`
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function hideBlueDisc(ms) {
+function hideGenerator(ms) {
 
   mandalaGeneratorBackground.value.style.opacity=0
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function showGenerator(ms) {
+  mandalaGeneratorBackground.value.style.opacity=1
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 
+defineExpose({ showGenerator })
 
 
 
@@ -120,7 +131,18 @@ function hideBlueDisc(ms) {
   margin-left:auto;
   margin-right:auto;
   opacity:100;
-  z-index:0;
+}
+
+#backgroundShadow {
+  position:absolute;
+  width:771px;
+  height: 771px;
+  left: 50%;
+  top:50%;
+  transform: translate(-50%, -50%);
+  z-index:-1;
+  border-radius:50%;
+  box-shadow:0 0.250em 0.6300em rgba(0, 0, 0, 0.4)
 }
 
 #blueBackground {
@@ -131,6 +153,7 @@ function hideBlueDisc(ms) {
   transition: height 2s;
   z-index:0;
   background-color: #005B7A;
+  
 }
 
 #discContent {
@@ -271,6 +294,7 @@ body {
 .c-form__input:required:valid {
   /*color: #ff7b73;*/
   color: #277696;
+  font-weight:700;
 }
 .c-form__input:required:valid + .c-form__buttonLabel {
   color: #ffffff;
